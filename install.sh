@@ -43,9 +43,10 @@ _main() {
       _uninstall
       ;;
     "--restore_defaults")
-      # restore defaults, requires root
+      # restore defaults and uninstall, requires root
       assert_root
       _restore
+      _uninstall
       ;;
     "--install" | "--offline" | "")
       # install dpkg hooks, requires root
@@ -66,8 +67,6 @@ _uninstall() {
     rm -f "/etc/apt/apt.conf.d/86pve-nags"
   [ -f "/usr/share/pve-nag-buster.sh" ] &&
     rm -f "/usr/share/pve-nag-buster.sh"
-  [ -f "/usr/share/pve-nag-restore.sh" ] &&
-    rm -f "/usr/share/pve-nag-restore.sh"
 
   echo "Script and dpkg hooks removed, please manually remove /etc/apt/sources.list.d/pve-no-subscription.list if desired"
 }
@@ -78,32 +77,40 @@ _restore() {
   [ -f "/etc/apt/sources.list.d/pve-no-subscription.list" ] &&
     rm -f "/etc/apt/sources.list.d/pve-no-subscription.list"
 
-  # remove dpkg pre/post install hooks 
-  [ -f "/etc/apt/apt.conf.d/86pve-nags" ] &&
-    rm -f "/etc/apt/apt.conf.d/86pve-nags"
-
-  # install the restoration script if available
-  temp=''
-  if [ -f "pve-nag-restore.sh" ]; then
-    # local copy available
-    temp="pve-nag-restore.sh"
-  elif [ "$1" != "--offline" ]; then
-    # fetch from github
-    echo "Fetching hook script from GitHub ..."
-    tempd="$(mktemp -d)" &&
-      trap "echo 'Cleaning up temporary files ...'; rm -f $tempd/*; rmdir $tempd" EXIT
-    temp="$tempd/pve-nag-restore.sh"
-    wget https://raw.githubusercontent.com/Justin-Garey/pve-nag-buster/fixed_repository_links/pve-nag-restore.sh \
-      -q --show-progress -O "$temp"
-  else
-    echo "No hook script available for offline restoration"
-    exit 1
-  fi
-  echo "Installing hook script as /usr/share/pve-nag-restore.sh"
-  install -o root -m 0550 "$temp" "/usr/share/pve-nag-restore.sh"
+  # restore the defaults
 
   echo "Running restoration script"
-  /usr/share/pve-nag-restore.sh
+
+  NAGTOKEN="data.status.toLowerCase() !== 'active'"
+  NAGFILE="/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js"
+  SCRIPT="$(basename "$0")"
+
+  # enable license nag
+
+  if [ -f "$NAGFILE.orig" ]; then
+    echo "$SCRIPT: Restoring Nag ..."
+    mv -f "$NAGFILE.orig" "$NAGFILE"
+    rm -f "$NAGFILE.orig"
+    systemctl restart pveproxy.service
+  fi
+
+  # enable paid repo list
+
+  PAID_BASE="/etc/apt/sources.list.d/pve-enterprise"
+
+  if [ -f "$PAID_BASE.disabled" ]; then
+    echo "$SCRIPT: Enabling PVE paid repo list ..."
+    mv -f "$PAID_BASE.disabled" "$PAID_BASE.list"
+  fi
+
+  # enable paid ceph repo list if it exists
+
+  CEPH_PAID_BASE="/etc/apt/sources.list.d/ceph"
+
+  if [  -f "$CEPH_PAID_BASE.disabled" ]; then
+      echo "$SCRIPT: Enabling ceph paid repo list ..."
+    mv -f "$CEPH_PAID_BASE.disabled" "$CEPH_PAID_BASE.list"
+  fi
 
   return 0
 }
