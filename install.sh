@@ -43,10 +43,9 @@ _main() {
       _uninstall
       ;;
     "--restore_defaults")
-      # restore default, also uninstalls, requires root
+      # restore defaults, requires root
       assert_root
       _restore
-      _uninstall
       ;;
     "--install" | "--offline" | "")
       # install dpkg hooks, requires root
@@ -67,6 +66,8 @@ _uninstall() {
     rm -f "/etc/apt/apt.conf.d/86pve-nags"
   [ -f "/usr/share/pve-nag-buster.sh" ] &&
     rm -f "/usr/share/pve-nag-buster.sh"
+  [ -f "/usr/share/pve-nag-restore.sh" ] &&
+    rm -f "/usr/share/pve-nag-restore.sh"
 
   echo "Script and dpkg hooks removed, please manually remove /etc/apt/sources.list.d/pve-no-subscription.list if desired"
 }
@@ -77,7 +78,9 @@ _restore() {
   [ -f "/etc/apt/sources.list.d/pve-no-subscription.list" ] &&
     rm -f "/etc/apt/sources.list.d/pve-no-subscription.list"
 
-  # the dpkg pre/post install hooks will be removed by _uninstall()
+  # remove dpkg pre/post install hooks 
+  [ -f "/etc/apt/apt.conf.d/86pve-nags" ] &&
+    rm -f "/etc/apt/apt.conf.d/86pve-nags"
 
   # install the restoration script if available
   temp=''
