@@ -39,3 +39,12 @@ if [ -f "$PAID_BASE.list" ]; then
   echo "$SCRIPT: Disabling PVE paid repo list ..."
   mv -f "$PAID_BASE.list" "$PAID_BASE.disabled"
 fi
+
+# disable paid ceph repo list if it exists
+
+CEPH_PAID_BASE="/etc/apt/sources.list.d/ceph"
+
+if [  -f "$CEPH_PAID_BASE.list" ]; then
+    echo "$SCRIPT: Disabling ceph paid repo list ..."
+  mv -f "$CEPH_PAID_BASE.list" "$CEPH_PAID_BASE.disabled"
+fi
