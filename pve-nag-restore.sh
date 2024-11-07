@@ -24,7 +24,7 @@ SCRIPT="$(basename "$0")"
 
 # enable license nag: https://johnscs.com/remove-proxmox51-subscription-notice/
 
-if grep -qs "$NAGTOKEN" "$NAGFILE" > /dev/null 2>&1; then
+if [ -f "$NAGFILE.orig" ]; then
   echo "$SCRIPT: Restoring Nag ..."
   mv -f "$NAGFILE.orig" "$NAGFILE"
   rm -f "$NAGFILE.orig"
