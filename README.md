@@ -25,7 +25,7 @@ packages installed with PVE by default.
 
 ### Installation
 ```sh
-wget https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/install.sh
+wget https://raw.githubusercontent.com/Justin-Garey/pve-nag-buster/fixed_repository_links/install.sh
 
 # Always read scripts downloaded from the internet before running them with sudo
 sudo bash install.sh

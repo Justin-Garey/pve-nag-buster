@@ -93,7 +93,7 @@ _restore() {
     tempd="$(mktemp -d)" &&
       trap "echo 'Cleaning up temporary files ...'; rm -f $tempd/*; rmdir $tempd" EXIT
     temp="$tempd/pve-nag-restore.sh"
-    wget https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/pve-nag-restore.sh \
+    wget https://raw.githubusercontent.com/Justin-Garey/pve-nag-buster/fixed_repository_links/pve-nag-restore.sh \
       -q --show-progress -O "$temp"
   else
     echo "No hook script available for offline restoration"
@@ -158,7 +158,7 @@ _install() {
     tempd="$(mktemp -d)" &&
       trap "echo 'Cleaning up temporary files ...'; rm -f $tempd/*; rmdir $tempd" EXIT
     temp="$tempd/pve-nag-buster.sh"
-    wget https://raw.githubusercontent.com/foundObjects/pve-nag-buster/master/pve-nag-buster.sh \
+    wget https://raw.githubusercontent.com/Justin-Garey/pve-nag-buster/fixed_repository_links/pve-nag-buster.sh \
       -q --show-progress -O "$temp"
   fi
   echo "Installing hook script as /usr/share/pve-nag-buster.sh"
@@ -183,7 +183,7 @@ _install() {
 
 emit_script() {
   base64 -d << 'YEET' | unxz
-/Td6WFoAAATm1rRGAgAhARwAAAAQz1jM4AYGA5ZdABGIQkY99BY0cwoNj8U0dcgowbs41qLC+aej
+/Td6WFoAAATm1rRGAgAhARwAAAAQz1jM4Ab8A8RdABGIQkY99BY0cwoNj8U0dcgowbs41qLC+aej
 mGQYj9kDeUYQYXlWIuqhoJLO08e8hIe8MoGJqvcVxM5VQehFNPqq4OH1KhbHgYGz5QSdcYFBPv2D
 jY49io85pCEdBXRw6wLkkTOpm7NoQQs6ZJ5F+vtHWz70HmnRfNhHpjrb16GcK0ERg/VLAx58EUIU
 t9OVgypxnKVdJL7/XxL/nUYLT65sn6ZQvKn4HpuPvK5eKgjZfBYJ3Q0CPDeFlXWIew43sqJTwmlX
@@ -199,8 +199,9 @@ NCixn7Q/gi9gDK+i0Ulfi5R20+QenkgNssOJ3kLfhuutsj5mYJ6wYeEE0mshgzDuXK2fW+ehHqtS
 SOTIUn3cTl74GhjX9tlotUaFGdt/yR/8N8TDzc9dRd7As9Eg4gKfP6pnZJnutTB7k7feponsA+3h
 Qbgm0NdjrxL93IdmB6cgJnMUm/A6GJTv5UynUDYwjZO82rUl3zkVGfu5nNKyEWN7K5gfRBi2l5oQ
 kckHNZJwTLt7Vta4OAfd5fraF37aRquLfrI0TGU+wHAqKpwoBpU3YOZ7o5//2CEVk7vrz5O4N6e4
-erl0B2a6XTQ2u/ICDkCLaA2q4FIbMtlCsNHjkKPV5xQO+/maKQAAABUX772XxF0fAAGyB4cMAABV
-zeNfscRn+wIAAAAABFla
+erl0B2a6XTQ2u/ICDkCLaA2q4FIbMtlCsNHjkKPV5xQol7NPiDaaPnHmoWFQD1UA3AF05CdGuZhI
+JI7H6Z5S7k2NKv51GV501WFp35CR6c9T/AAAu5I9JjMFP44AAeAH/Q0AAGZO5RuxxGf7AgAAAAAE
+WVo=
 YEET
 }
 
