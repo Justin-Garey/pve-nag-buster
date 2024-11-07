@@ -10,7 +10,7 @@ means. High quality open source software like Proxmox needs our support!
 
 ### News:
 
-Last updated for: pve-manager/6.4-4/337d6701 (running kernel: 5.4.106-1-pve)
+Last updated for: pve-manager/8.2.2/9355359cd7afbae4 (running kernel: 6.8.4-2-pve)
 
 ### How does it work?
 
@@ -46,6 +46,11 @@ cd pve-nag-buster && sudo ./install.sh
 ```sh
 sudo ./install.sh --uninstall
 # remove /etc/apt/sources.list.d/pve-no-subscription.list if desired
+```
+
+### Restore Defaults:
+```sh
+sudo ./install.sh --restore_defaults
 ```
 
 ### Notes:
